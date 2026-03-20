@@ -26,12 +26,37 @@ class GraphBuilder:
         self.graph_builder.add_edge("chatbot",END)
 
 
+
+
+    def chatbot_with_tool_build_graph(self):
+        """
+        Builds a basic chatbot graph using LangGraph.
+        This method initializes a chatbot node using the `BasicChatbotNode` class and intergrates it into the graph 
+        The chatbot node is set as both the entry and exit point of the graph
+        """
+
+        self.basic_chatbot_node = BasicChatbotNode(self.llm)
+        self.graph_builder.add_node("chatbot",self.basic_chatbot_node.process)
+        self.graph_builder.add_node("tool",self.basic_chatbot_node.process)
+
+        self.graph_builder.add_edge(START,"chatbot")
+        self.graph_builder.add_edge("chatbot","tool")
+        self.graph_builder.add_edge("tool","chatbot")
+
+
+
+
+        
+
         
 
     def setup_graph(self,usecase :  str):
 
         if usecase == 'Basic Chatbot':
             self.basic_chatbot_build_graph()
+            return self.graph_builder.compile()
+        if usecase == 'Chatbot with tool':
+            self.chatbot_with_tool_build_graph()
             return self.graph_builder.compile()
             
 

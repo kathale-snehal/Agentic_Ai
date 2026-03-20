@@ -24,11 +24,17 @@ class LoadStreamlitUI:
             if self.user_controls["selected_llm"] == "Gemini":
                 model_options = self.config.get_gemini_model_options()
                 self.user_controls["selected_gemini_model"] =  st.selectbox("select model", model_options)
-                self.user_controls["GEMINI_API_KEY"] = st.session_state["GEMINI_API_KEY"]=  st.text_input("API Key", type="password")
+                self.user_controls["GEMINI_API_KEY"] = st.session_state["GEMINI_API_KEY"]=  st.text_input("GEMINI API Key", type="password")
+                # name should be uniques like gemini api key or tavily api key in text_input
 
                 if not self.user_controls["GEMINI_API_KEY"]:
                     st.warning("set api key")
 
             self.user_controls["selected_usecase"] =  st.selectbox("Select Usecases", usecase_options)
-            
+
+            if self.user_controls["selected_usecase"] == 'Chatbot with tool':
+                self.user_controls["TAVILY_API_KEY"] = st.session_state["TAVILY_API_KEY"]=  st.text_input("TAVILY API Key", type="password")
+
+
+
         return self.user_controls
